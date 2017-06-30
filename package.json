@@ -1,0 +1,30 @@
+{
+    "name": "com.example.wallpic",
+    "version": "1.0.0",
+    "displayName": "WallPic",
+    "cordova": {
+        "platforms": [
+            "android"
+        ],
+        "plugins": {
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-file-transfer": {},
+            "cordova-plugin-file": {},
+            "cordova-plugin-wallpaper": {},
+            "cordova-plugin-x-toast": {},
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-android-permissions": {}
+        }
+    },
+    "dependencies": {
+        "cordova-android": "~6.2.3",
+        "cordova-plugin-android-permissions": "^1.0.0",
+        "cordova-plugin-compat": "^1.1.0",
+        "cordova-plugin-file": "^4.3.3",
+        "cordova-plugin-file-transfer": "^1.6.3",
+        "cordova-plugin-splashscreen": "^4.0.3",
+        "cordova-plugin-statusbar": "^2.2.3",
+        "cordova-plugin-whitelist": "1",
+        "cordova-plugin-x-toast": "^2.6.0"
+    }
+}

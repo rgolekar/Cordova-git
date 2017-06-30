@@ -1,0 +1,109 @@
+/*css reset*/
+body,ul,p,li,h1,h2,h3,h4,h5{
+	margin:0;
+	padding:0;
+	font-family: "Quicksand",sans-serif;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+	text-rendering: optimizeLegibility !important;
+	-webkit-font-smoothing: antialiased !important;
+}
+/*headings*/
+h1{
+	font-size:1.25em;
+	font-weight:normal;
+}
+/*alignment*/
+.center{
+	text-align:center;
+}
+.right{
+	text-align:right
+}
+.left{
+	text-align:left
+}
+
+.fadeScreen{
+	position:fixed;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	background-color:rgba(0,0,0,0.6);
+	z-index:8;
+	display:none
+}
+/*grids*/
+.grid-wrapper{
+	overflow:hidden
+}
+.grid-wrapper > div{
+	box-sizing: border-box;
+    float: left;
+    margin: 0;
+	min-height:1px;
+}
+.cell1{
+	width:16.66%
+}
+.cell2{
+	width:33.33%
+}
+.cell3{
+	width:50%
+}
+.cell4{
+	width:66.66%
+}
+.cell5{
+	width:83.33%
+}
+.cell6{
+	width:100%
+}
+.icon{
+	font-family:"fontAwesome",sans-serif;
+}
+strong{
+	font-family: 'QuicksandBold', sans-serif;
+}
+/*font-family*/
+@font-face {
+    font-family: 'Quicksand';
+    src: url('fonts/Quicksand-Regular.woff') format('woff'),
+         url('fonts/Quicksand-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'QuicksandLite';
+    src: url('fonts/Quicksand-Light.woff') format('woff'),
+         url('fonts/Quicksand-Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'QuicksandBold';
+    src: url('fonts/Quicksand-Bold.woff') format('woff'),
+         url('fonts/Quicksand-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'fontAwesome';
+    src: url('fonts/fontawesome-webfont.woff') format('woff'),
+         url('fonts/fontawesome-webfont.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'open_sans_condensedlight';
+    src: url('fonts/opensanscondensed-light-webfont.woff2') format('woff2'),
+         url('fonts/opensanscondensed-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+/*overlay screen common for all*/
+.overlayScreen{
+	position:fixed;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	background-color:rgba(0,0,0,0.6);
+	z-index:100;
+	display:none
+}

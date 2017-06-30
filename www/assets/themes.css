@@ -1,0 +1,8 @@
+/*******light*********/
+.light body,nav, nav a{
+	background-color:#fff;
+	color:#333
+}
+.light header,nav .close::after,a.menu::after{
+	color:#fff
+}

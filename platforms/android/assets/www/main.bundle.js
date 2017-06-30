@@ -911,9 +911,7 @@ var WallpaperlistComponent = (function () {
             var fileURL = cordova.file.externalRootDirectory + 'wallpic/' + _this.wallId + '.jpg';
             var fileURL2 = cordova.file.externalRootDirectory + 'wallpic/thumbs/' + _this.wallId + '.jpg';
             __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow").show();
-            __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow .digits").html(0);
-            __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow .text").html("Starting download");
-            __WEBPACK_IMPORTED_MODULE_4_jquery___default()(".progressBar span").width(0);
+            resetDownPerc();
             wallDownload.download(uri, fileURL, function (entry) {
                 __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow .digits,#downProShow .text").html("");
                 __WEBPACK_IMPORTED_MODULE_4_jquery___default()(".progressBar span").width(0);
@@ -960,11 +958,16 @@ var WallpaperlistComponent = (function () {
             };
             __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow .close").click(function () {
                 wallDownload.abort();
-                __WEBPACK_IMPORTED_MODULE_4_jquery___default()(".progress .digits").html("0");
-                __WEBPACK_IMPORTED_MODULE_4_jquery___default()(".progressBar span").width(0);
+                resetDownPerc();
                 setTimeout(function () { __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow").hide(); }, 200);
                 window['plugins'].toast.showShortBottom('Download canceled.', function (a) { console.log('toast success: ' + a); }, function (b) { alert('toast error: ' + b); });
             });
+            function resetDownPerc() {
+                console.log("reset called");
+                __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow .digits").html(0);
+                __WEBPACK_IMPORTED_MODULE_4_jquery___default()(".progressBar span").width(0);
+                __WEBPACK_IMPORTED_MODULE_4_jquery___default()("#downProShow .text").html("Starting download");
+            }
         };
     }
     //testFile = "cdvfile://localhost/persistent/wallpic/thumbs/139.jpg";

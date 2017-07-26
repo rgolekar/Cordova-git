@@ -62,5 +62,37 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "ca.purplemad.wallpaper": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-wallpaper"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-wallpaper": {
+        "source": {
+            "type": "registry",
+            "id": "https://github.com/fbsanches/cordova-plugin-wallpaper.git"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-network-information": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-network-information"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-navigationbar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-navigationbar"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -27,6 +27,15 @@
         },
         "cordova-plugin-android-permissions": {
             "PACKAGE_NAME": "com.example.wallpic"
+        },
+        "cordova-plugin-wallpaper": {
+            "PACKAGE_NAME": "com.example.wallpic"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.example.wallpic"
+        },
+        "cordova-plugin-navigationbar": {
+            "PACKAGE_NAME": "com.example.wallpic"
         }
     },
     "dependent_plugins": {

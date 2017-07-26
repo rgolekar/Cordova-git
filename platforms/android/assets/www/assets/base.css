@@ -6,11 +6,13 @@ body,ul,p,li,h1,h2,h3,h4,h5{
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
 	text-rendering: optimizeLegibility !important;
 	-webkit-font-smoothing: antialiased !important;
+	list-style-type: none
 }
 /*headings*/
 h1{
-	font-size:1.25em;
+	font-size:1.5em;
 	font-weight:normal;
+	font-family: 'QuicksandBold';
 }
 /*alignment*/
 .center{
@@ -105,5 +107,62 @@ strong{
 	left:0;
 	background-color:rgba(0,0,0,0.6);
 	z-index:100;
-	display:none
+}
+.popup{
+	width:260px;
+	min-height:150px;
+	position: absolute;
+	top:50%;
+	left:50%;
+	margin:-90px 0 0 -130px;
+	background-color: #fff;
+	box-shadow: 1px 1px 3px #000
+}
+.popup h1{
+	text-align: center;
+	padding: 10px
+}
+.popup p{
+	text-align: center;
+	padding: 10px;
+	font-size: 1em;
+}
+.btn{
+	padding: 14px 10px 15px 10px;
+	font-size: 0.915em;
+	color: #fff;
+	text-transform: uppercase;
+	display: block;
+	text-align: center;
+	background-color: #0098db
+}
+.btn.topMar{
+	margin-top: 20px
+}
+.btn:active{
+	opacity: 0.8
+}
+.hide{
+	opacity: 0
+}
+.animfadeTopIn{
+	animation-name: fadeTopIn;
+	animation-iteration-count:1;
+	animation-duration: 400ms;
+	animation-timing-function: ease-in-out;
+	opacity:1;
+}
+@keyframes fadeTopIn {
+    0%   {top:45%;opacity:0}
+	100% {top:50%;opacity:1}
+}
+.animfadeTopOut{
+	animation-name: fadeTopOut;
+	animation-iteration-count:1;
+	animation-duration: 400ms;
+	animation-timing-function: ease-in-out;
+}
+@keyframes fadeTopOut {
+    0%   {top:50%;opacity:1}
+	100% {top:42%;opacity:0}
 }

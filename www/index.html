@@ -10,15 +10,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
-<body class="light">
+<body class="dark">
   <app-root>Loading...</app-root>
-  <div class="content">
-  </div>
+
+   <script type="text/javascript" src="assets/lib/jquery-3.2.1.min.js"></script> 
+   <script type="text/javascript" src="assets/lib/jquery.lazyload.js"></script> 
   <script>
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
-        StatusBar.hide();
+        StatusBar.hide(); 
     }
+
+    $(document).ready(function(){
+      setTimeout(function() {
+        $(function() {
+          // console.log("lazy loader called");
+          // $("img.lazy").lazyload();      
+        });
+      }, 3000);      
+    });
   </script> 
   <script type="text/javascript" src="inline.bundle.js"></script><script type="text/javascript" src="polyfills.bundle.js"></script><script type="text/javascript" src="styles.bundle.js"></script><script type="text/javascript" src="vendor.bundle.js"></script><script type="text/javascript" src="main.bundle.js"></script></body>
 </html>

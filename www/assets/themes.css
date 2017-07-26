@@ -6,3 +6,9 @@
 .light header,nav .close::after,a.menu::after{
 	color:#fff
 }
+.dark{
+	background-color: #333
+}
+span.menu.icon{
+	color:#fff
+}

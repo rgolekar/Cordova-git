@@ -5,15 +5,21 @@ import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import android.app.WallpaperManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import org.apache.cordova.PluginResult;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import java.io.*;
@@ -65,8 +71,7 @@ public class wallpaper extends CordovaPlugin
 			{
                 
                 String str=Environment.getExternalStorageDirectory().getAbsolutePath() + "/wallpic/" + image;
-                
-                
+
                 File imgFile = new  File(str);
 				String filePath = imgFile.getPath();
 
@@ -74,7 +79,13 @@ public class wallpaper extends CordovaPlugin
 
                 WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
                 myWallpaperManager.setBitmap(bitmap1);
-                
+
+               //------------------=============----------------------
+
+
+
+
+
                // Toast.makeText(context,"Set ",Toast.LENGTH_SHORT).show();
 
 
@@ -88,5 +99,28 @@ public class wallpaper extends CordovaPlugin
 		}
 	}
 
-    
+	public static Uri getImageContentUri(Context context, String absPath) {
+
+
+		Cursor cursor = context.getContentResolver().query(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+				, new String[] { MediaStore.Images.Media._ID }
+				, MediaStore.Images.Media.DATA + "=? "
+				, new String[] { absPath }, null);
+
+		if (cursor != null && cursor.moveToFirst()) {
+			int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+			return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI , Integer.toString(id));
+
+		} else if (!absPath.isEmpty()) {
+			ContentValues values = new ContentValues();
+			values.put(MediaStore.Images.Media.DATA, absPath);
+			return context.getContentResolver().insert(
+					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+		} else {
+			return null;
+		}
+	}
+
+
 }

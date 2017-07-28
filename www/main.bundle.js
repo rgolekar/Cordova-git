@@ -138,11 +138,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var ShowpopupService = (function () {
     function ShowpopupService() {
+        this.reload = false;
     }
     ShowpopupService.prototype.showNoInternetPopup = function () {
         var header = "No internet!";
         var message = "Please check internet connection.";
         var button = "Try again";
+        this.reload = true;
         if (!this.popupVisible) {
             this.showPopup(header, message, button);
         }
@@ -151,6 +153,16 @@ var ShowpopupService = (function () {
         var header = "Error!";
         var message = "Error occured while connecting to server.";
         var button = "Try again";
+        this.reload = true;
+        if (!this.popupVisible) {
+            this.showPopup(header, message, button);
+        }
+    };
+    ShowpopupService.prototype.showSubmitWallPopup = function () {
+        var header = "Submit Wallpic";
+        var message = "You can send picture taken by you to us on wallpic@gmail.com. We will notify you once it is available in the app. Thanks in advance :)";
+        var button = "Send now";
+        this.reload = false;
         if (!this.popupVisible) {
             this.showPopup(header, message, button);
         }
@@ -175,7 +187,10 @@ var ShowpopupService = (function () {
             _this.popupMessage = " ";
             _this.popupButton = " ";
         }, 400);
-        location.reload();
+        if (this.reload) {
+            location.reload();
+        }
+        ;
     };
     /**show generic loading indicator**/
     ShowpopupService.prototype.showLoader = function () {
@@ -293,7 +308,7 @@ exports = module.exports = __webpack_require__(9)(false);
 
 
 // module
-exports.push([module.i, "nav{\n\tposition:fixed;\n\ttop:0;\n\tbottom:0;\n\tleft:0;\n\twidth:260px;\n\tz-index:9;\n    -webkit-transform: translate3d(-260px, 0px, 0px);\n            transform: translate3d(-260px, 0px, 0px);\n\ttransition:-webkit-transform 300ms ease 0s;\n\ttransition:transform 300ms ease 0s;\n\ttransition: transform 300ms ease 0s, -webkit-transform 300ms ease 0s;\n}\nnav .close{\n\tdisplay:block;\n\twidth:30px;\n\theight:30px;\n\tposition:absolute;\n\tright:-40px;\n\ttop:8px;\n\tfont-size:1.5em;\n\tdisplay:none\n}\nnav .close::after{\n\tcontent:\"\\F00D\";\n\tdisplay:inline-block;\n\tmargin:4px 0 0 5px\n}\nnav li span{\n\tpadding:12px 20px;\n\tfont-size:1em;\n\tfont-family: \"Quicksand\",sans-serif;\n\tdisplay:block;\n\ttext-decoration:none\n}\nnav div.logo{\n\tposition:absolute;\n\tbottom:5px;\n\tright:5px;\n\twidth:115px;\n}\nnav div.logo img{\n\twidth:100%;\n\tdisplay:block\n}\nnav li span.icon{\n\tpadding-right:20px;\t\t\n\tposition: relative \n}\nnav li span.fav::after{\n\tcontent:'\\F004';\n\tcolor:#999;\n\tposition: absolute;\n\tright:20px;\n\tfont-family: 'fontAwesome';\n\tdisplay: inline-block;\n\tfont-size: 0.875em;\n\ttop:17px\n}\nnav li span.down::after{\n\tcontent:'\\F063';\n\tcolor:#999;\n\tposition: absolute;\n\tright:20px;\n\tfont-family: 'fontAwesome';\n\tdisplay: inline-block;\n\tfont-size: 0.875em;\n\ttop: 17px\n}\n.verNum{\n\tcolor: #fff;\n\tposition: absolute;\n\tright:10px;\n\tbottom:10px;\n\tfont-size: 0.915em\n}\nnav .categories{\n\tmax-height: 70vh;\n\toverflow-y: scroll;\n\tbackground-color: #f1f1f1;\n\tpadding-top:10px\n}", ""]);
+exports.push([module.i, "nav{\n\tposition:fixed;\n\ttop:0;\n\tbottom:0;\n\tleft:0;\n\twidth:260px;\n\tz-index:9;\n    -webkit-transform: translate3d(-260px, 0px, 0px);\n            transform: translate3d(-260px, 0px, 0px);\n\ttransition:-webkit-transform 300ms ease 0s;\n\ttransition:transform 300ms ease 0s;\n\ttransition: transform 300ms ease 0s, -webkit-transform 300ms ease 0s;\n}\nnav .close{\n\tdisplay:block;\n\twidth:30px;\n\theight:30px;\n\tposition:absolute;\n\tright:-40px;\n\ttop:8px;\n\tfont-size:1.5em;\n\tdisplay:none\n}\nnav .close::after{\n\tcontent:\"\\F00D\";\n\tdisplay:inline-block;\n\tmargin:4px 0 0 5px\n}\nnav li span{\n\tpadding:12px 20px;\n\tfont-size:1em;\n\tfont-family: \"Quicksand\",sans-serif;\n\tdisplay:block;\n\ttext-decoration:none\n}\nnav div.logo{\n\tposition:absolute;\n\tbottom:5px;\n\tright:5px;\n\twidth:115px;\n}\nnav div.logo img{\n\twidth:100%;\n\tdisplay:block\n}\nnav li span.icon{\n\tpadding-right:20px;\t\t\n\tposition: relative \n}\nnav li span.fav::after{\n\tcontent:'\\F004';\n\tcolor:#999;\n\tposition: absolute;\n\tright:20px;\n\tfont-family: 'fontAwesome';\n\tdisplay: inline-block;\n\tfont-size: 0.875em;\n\ttop:17px\n}\nnav li span.down::after{\n\tcontent:'\\F063';\n\tcolor:#999;\n\tposition: absolute;\n\tright:20px;\n\tfont-family: 'fontAwesome';\n\tdisplay: inline-block;\n\tfont-size: 0.875em;\n\ttop: 17px\n}\nnav li span.submit::after{\n\tcontent:'\\F0E0';\n\tcolor:#999;\n\tposition: absolute;\n\tright:20px;\n\tfont-family: 'fontAwesome';\n\tdisplay: inline-block;\n\tfont-size: 0.875em;\n\ttop: 17px\n}\n.verNum{\n\tcolor: #fff;\n\tposition: absolute;\n\tright:10px;\n\tbottom:10px;\n\tfont-size: 0.915em\n}\nnav .categories{\n\tmax-height: 60vh;\n\toverflow-y: scroll;\n\tbackground-color: #f1f1f1;\n\tpadding-top:10px\n}", ""]);
 
 // exports
 
@@ -359,14 +374,14 @@ module.exports = "<div id=\"popup\" *ngIf=\"showpopup.popupVisible\" class=\"ove
 /***/ 165:
 /***/ (function(module, exports) {
 
-module.exports = "<nav>\n\t\t<span class=\"close icon\" (click)=\"clmsrve.closeMenu()\"></span>\t\t\t\t\n\t\t<ul class=\"categories\">\n\t\t\t<li><span (click)=\"setPipeFilter('abstract')\">Abstract</span></li>\n\t\t\t<li><span>Bikes</span></li>\n\t\t\t<li><span>Cars</span></li>\n\t\t\t<li><span>Movies</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('nature')\">Nature</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('people')\">People</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('places')\">Places</span></li>\n\t\t\t<li><span>Religious</span></li>\n\t\t\t<li><span>Space</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('misc')\">Miscellaneous</span></li>\t\t\t\t\t\n\t\t</ul>\t\n\t\t<ul>\n\t\t\t<li><span class=\"icon fav\" (click)=\"setPipeFilter('fav')\">Favorites ({{globals.favoritesCount}})</span></li>\n\t\t\t<li><span class=\"icon down\" (click)=\"showDownloadedWalls()\">Downloads ({{globals.downloadsCount}})</span></li>\n\t\t</ul>\t\t\n\t\t<div class=\"logo\">\n\t\t\t<img src=\"assets/images/wallpic-logo-blue.png\" alt=\"Wallpic\">\n\t\t</div>\n</nav>\n<div class=\"fadeScreen\" (click)=\"clmsrve.closeMenu()\"><span class=\"verNum\">v1.0</span></div>"
+module.exports = "<nav>\n\t\t<span class=\"close icon\" (click)=\"clmsrve.closeMenu()\"></span>\t\t\t\t\n\t\t<ul class=\"categories\">\n\t\t\t<li><span (click)=\"setPipeFilter('abstract')\">Abstract</span></li>\n\t\t\t<li><span>Bikes</span></li>\n\t\t\t<li><span>Cars</span></li>\n\t\t\t<li><span>Movies</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('nature')\">Nature</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('people')\">People</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('places')\">Places</span></li>\n\t\t\t<li><span>Religious</span></li>\n\t\t\t<li><span>Space</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('misc')\">Miscellaneous</span></li>\t\t\t\t\t\n\t\t</ul>\t\n\t\t<ul>\n\t\t\t<li><span class=\"icon fav\" (click)=\"setPipeFilter('fav')\">Favorites ({{globals.favoritesCount}})</span></li>\n\t\t\t<li><span class=\"icon down\" (click)=\"showDownloadedWalls()\">Downloads ({{globals.downloadsCount}})</span></li>\n\t\t\t<li><span class=\"icon submit\" (click)=\"submitWallPic()\">Submit Wallpic</span></li>\n\t\t</ul>\t\t\n\t\t<div class=\"logo\">\n\t\t\t<img src=\"assets/images/wallpic-logo-blue.png\" alt=\"Wallpic\">\n\t\t</div>\n</nav>\n<div class=\"fadeScreen\" (click)=\"clmsrve.closeMenu()\"><span class=\"verNum\">v1.0</span></div>"
 
 /***/ }),
 
 /***/ 166:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"mainWalls\" *ngIf=\"globals.mainwalls\" class=\"wallList\" #container>\n  <div *ngIf=\"globals.showFeatured\">\n    <div class=\"featuredWall\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype | featured | slice:0:1\"  data-id=\"{{wallpaper.category + wallpaper.id}}\" >\n      <img src=\"{{wallpath.featpath + wallpaper.category}}{{wallpaper.id}}.jpg\" alt=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n      <div class=\"description\"></div>\n    </div>\n  </div>\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype\">\n      <span data-id=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img class=\"lazy\" attr.data-original=\"{{wallpath.thumbpath + wallpaper.category + wallpaper.id}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div id=\"wallpopup\" *ngIf=\"globals.popshow\">\n  <div id=\"imgwrapper\">\n    <div id=\"imgscroller\">\n      <img src=\"{{globals.Imgpath}}\" alt=\"\">\n    </div>\n  </div>    \n  <div class=\"infoheader\">\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><!--p class=\"infotext\">Wallpaper size: {{wfolder}} <strong>199</strong> Downloads {{downloadPerc}}</p--><span class=\"backIcon\" (click)=\"closeWallPopup()\"></span></div>\n      <div class=\"cell3 right\"><span class=\"infoIcon\" (click)=\"showWallInfo()\"></span><span class=\"favIcon\" (click)=\"setFavorite()\"></span></div>\n    </div>\n    <div class=\"wallInfo\">\n      <p><strong>{{localwallpaperId}}</strong></p>\n      <p>Source/Author: John Doe</p>\n      <p>Downloads: 137</p>\n      <p>Favorites: 89</p>\n      <p>Tags: #nature #green</p>\n    </div>\n  </div>\n  <div class=\"btns\">\t\t\t\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><span *ngIf=\"!wallisDownload\" (click)=\"downloadWallpaper()\">Download</span><span *ngIf=\"wallisDownload\" (click)=\"deleteWallpaper()\">Delete</span></div>\n      <div class=\"cell3\"><span (click)=\"setWallpaper()\">Set Wallpaper</span></div>\n    </div>\n  </div>\n</div>\n<div id=\"downloadedWalls\" *ngIf=\"globals.downloadedwalls\" class=\"wallList\">\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of downloadedIds\">\n      <span data-id=\"{{wallpaper}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img src=\"/storage/emulated/0/wallpic/thumbs/{{wallpaper}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div class=\"homeBtn\" (click)=\"globals.resetPipe()\"></div>\n<app-download-overlay></app-download-overlay>"
+module.exports = "<div id=\"mainWalls\" *ngIf=\"globals.mainwalls\" class=\"wallList\" #container>\n  <div *ngIf=\"globals.showFeatured\">\n    <div class=\"featuredWall\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype | featured | slice:0:1\"  data-id=\"{{wallpaper.category + wallpaper.id}}\" >\n      <img src=\"{{wallpath.featpath + wallpaper.category}}{{wallpaper.id}}.jpg\" alt=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n      <div class=\"description\"></div>\n    </div>\n  </div>\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype\">\n      <span data-id=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img class=\"lazy\" attr.data-original=\"{{wallpath.thumbpath + wallpaper.category + wallpaper.id}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div id=\"wallpopup\" *ngIf=\"globals.popshow\">\n  <div id=\"imgwrapper\">\n    <div id=\"imgscroller\">\n      <img src=\"{{globals.Imgpath}}\" alt=\"\">\n    </div>\n  </div>    \n  <div class=\"infoheader\">\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><span class=\"backIcon\" (click)=\"closeWallPopup()\"></span></div>\n      <div class=\"cell3 right\"><span class=\"infoIcon\" (click)=\"showWallInfo()\"></span><span class=\"favIcon\" (click)=\"setFavorite()\"></span></div>\n    </div>\n    <div class=\"wallInfo\">\n      <p><strong>{{wallInfo.category+wallInfo.id}}</strong></p>\n      <p>Source/Author: John Doe</p>\n      <p>Downloads: 137</p>\n      <p>Favorites: 89</p>\n      <p>Tags: #nature #green</p>\n    </div>\n  </div>\n  <div class=\"btns\">\t\t\t\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><span *ngIf=\"!wallisDownload\" (click)=\"downloadWallpaper()\">Download</span><span *ngIf=\"wallisDownload\" (click)=\"deleteWallpaper()\">Delete</span></div>\n      <div class=\"cell3\"><span (click)=\"setWallpaper()\">Set Wallpaper</span></div>\n    </div>\n  </div>\n</div>\n<div id=\"downloadedWalls\" *ngIf=\"globals.downloadedwalls\" class=\"wallList\">\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of downloadedIds\">\n      <span data-id=\"{{wallpaper}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img src=\"/storage/emulated/0/wallpic/thumbs/{{wallpaper}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div class=\"homeBtn\" (click)=\"globals.resetPipe()\"></div>\n<app-download-overlay></app-download-overlay>"
 
 /***/ }),
 
@@ -1317,6 +1332,11 @@ var SidemenuComponent = (function () {
         this.showpopup.showLoader();
         setTimeout(function () { _this.showpopup.hideLoader(); }, 700);
     };
+    SidemenuComponent.prototype.submitWallPic = function () {
+        var _this = this;
+        this.clmsrve.closeMenu();
+        setTimeout(function () { _this.showpopup.showSubmitWallPopup(); }, 300);
+    };
     SidemenuComponent.prototype.ngOnInit = function () {
         this.globals.refreshDownAndFavCount();
     };
@@ -1478,6 +1498,7 @@ var WallpaperlistComponent = (function () {
         var _this = this;
         this.globals.popshow = true;
         this.globals.home = false;
+        this.wallInfo = wallpaper;
         //check if wallpaper needs to be loaded from the server or device     
         if (this.globals.mainwalls) {
             this.localwallpaperId = wallpaper.category + wallpaper.id;
@@ -1493,7 +1514,7 @@ var WallpaperlistComponent = (function () {
             this.globals.thumbpath = '/storage/emulated/0/wallpic/thumbs' + this.localwallpaperId + ".jpg";
         }
         ;
-        //check if the wallaper is already downloaded           
+        //check if the wallpaper is already downloaded           
         if (this.checkDownloadList()) {
             this.wallisDownload = true;
             //console.log("Wallpaper is already downloaded!");

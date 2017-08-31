@@ -65,6 +65,20 @@ var GlobalsService = (function () {
             });
         })(jQuery);
     };
+    GlobalsService.prototype.checkOSversion = function () {
+        var ua = navigator.userAgent;
+        if (ua.indexOf("Android") >= 0) {
+            var androidversion = parseFloat(ua.slice(ua.indexOf("Android") + 8));
+            if (androidversion < 6) {
+                console.log(androidversion);
+                this.androidOsVer = androidversion;
+                this.downloadPath = "file:///storage/sdcard/wallpic";
+            }
+            else {
+                this.downloadPath = "/storage/emulated/0/wallpic";
+            }
+        }
+    };
     GlobalsService.prototype.cancelDownload = function () {
         var _this = this;
         this._ngZone.run(function () {
@@ -82,8 +96,18 @@ var GlobalsService = (function () {
     };
     /*refresh count of downloads and favorites*/
     GlobalsService.prototype.refreshDownAndFavCount = function () {
-        this.downloadsCount = JSON.parse(localStorage.getItem("downloads")).length;
-        this.favoritesCount = JSON.parse(localStorage.getItem("favorites")).length;
+        if (localStorage.getItem("downloads") != null) {
+            this.downloadsCount = JSON.parse(localStorage.getItem("downloads")).length;
+        }
+        else {
+            this.downloadsCount = 0;
+        }
+        if (localStorage.getItem("favorites") != null) {
+            this.favoritesCount = JSON.parse(localStorage.getItem("favorites")).length;
+        }
+        else {
+            this.favoritesCount = 0;
+        }
     };
     /*check write permission*/
     GlobalsService.prototype.checkWritePerm = function () {
@@ -160,11 +184,12 @@ var ShowpopupService = (function () {
     };
     ShowpopupService.prototype.showSubmitWallPopup = function () {
         var header = "Submit Wallpic";
-        var message = "You can send picture taken by you to us on wallpic@gmail.com. We will notify you once it is available in the app. Thanks in advance :)";
-        var button = "Send now";
+        var message = "You can send picture taken by you to us on wallpic@gmail.com. We will notify you once it is available in the app.";
+        var button1 = "Later";
+        var button2 = "Send now";
         this.reload = false;
         if (!this.popupVisible) {
-            this.showPopup(header, message, button);
+            this.showPopup2(header, message, button1, button2);
         }
     };
     ShowpopupService.prototype.showPopup = function (head, msg, btn) {
@@ -174,7 +199,18 @@ var ShowpopupService = (function () {
             _this.popupHeader = head;
             _this.popupMessage = msg;
             _this.popupButton = btn;
-            __WEBPACK_IMPORTED_MODULE_1_jquery___default()(".popup").addClass("animfadeTopIn");
+            __WEBPACK_IMPORTED_MODULE_1_jquery___default()("#popup .popup").addClass("animfadeTopIn");
+        }, 100);
+    };
+    ShowpopupService.prototype.showPopup2 = function (head, msg, btn, btn2) {
+        var _this = this;
+        this.popup2Visible = true;
+        setTimeout(function () {
+            _this.popupHeader = head;
+            _this.popupMessage = msg;
+            _this.popupButton = btn;
+            _this.popupButton2 = btn2;
+            __WEBPACK_IMPORTED_MODULE_1_jquery___default()("#popup2 .popup").addClass("animfadeTopIn");
         }, 100);
     };
     ShowpopupService.prototype.hidePopup = function () {
@@ -183,9 +219,11 @@ var ShowpopupService = (function () {
         __WEBPACK_IMPORTED_MODULE_1_jquery___default()(".popup").addClass("animfadeTopOut");
         setTimeout(function () {
             _this.popupVisible = false;
+            _this.popup2Visible = false;
             _this.popupHeader = " ";
             _this.popupMessage = " ";
             _this.popupButton = " ";
+            _this.popupButton2 = " ";
         }, 400);
         if (this.reload) {
             location.reload();
@@ -210,7 +248,7 @@ ShowpopupService = __decorate([
 
 /***/ }),
 
-/***/ 152:
+/***/ 153:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -228,7 +266,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 153:
+/***/ 154:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -246,7 +284,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 154:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -264,7 +302,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 155:
+/***/ 156:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -282,7 +320,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 156:
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -300,7 +338,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 157:
+/***/ 158:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -318,7 +356,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 158:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -326,7 +364,7 @@ exports = module.exports = __webpack_require__(9)(false);
 
 
 // module
-exports.push([module.i, ".featuredWall{\n\tbackground-size:100% auto;\n\tbackground-repeat:no-repeat;\n\tbackground-position:center;\n\tz-index:3;\n\tposition:relative\n}\n.featuredWall img{\n\twidth:100%;\n\tdisplay:block\n}\n.wallList .grid-wrapper span{\n\twidth:100%;\n\tdisplay:block;\t\n\tmin-height:53px\n}\n.wallList .grid-wrapper span img{\n\twidth:100%;\n\tdisplay:block\n}\n.wallList .grid-wrapper span:active{\n\tbox-shadow: inset 0 0 12px 8px rgba(0,0,0,0.7);\n}\n#wallpopup{\n\tposition:fixed;\n\ttop:0;\n\tbottom:0;\n\twidth:100%;\n\tbackground-color:rgba(0,0,0,0.7);\n\tz-index:97;\n}\n#wallpopup .btns{\n\tposition:absolute;\n\tbottom:0;\n\twidth:100%;\n\tz-index:99;\n\tbackground-color:rgba(0,0,0,0.3);\n\ttransition: all 250ms linear\n}\n#wallpopup .btns span{\n\tcolor:#fff;\n\ttext-decoration:none;\n\ttext-align:center;\n\tdisplay:block;\n\tpadding:13px 0;\t\n\tfont-size:0.875em;\n\ttext-transform:uppercase;\n\t/*border-top:1px solid #999*/\n}\n#wallpopup.hideAll .btns{\n\tbottom:-46px\n}\n#wallpopup.hideAll .infoheader{\n\ttop:-46px\n}\n#imgscroller{\n\toverflow-x: scroll;\n}\n#imgwrapper img{\n\tdisplay:block;\n\twidth:200vw;\n\tmin-height:100vh\n}\n.infoheader{\n\tpadding: 10px 0;\n\tposition: absolute;\n    top: 0;\n    width: 100%;\n    z-index: 99;;\n\ttransition: all 250ms linear\n}\n.infoheader .grid-wrapper{\n\tpadding: 0 4% 10px\n}\n.infotext{\n\tfont-size:0.65em;\n\tcolor:#fff;\n}\n.favIcon{\n\twidth: 35px;\n\theight: 35px;\n\tdisplay: inline-block;\n\tbackground: url(" + __webpack_require__(197) + ")no-repeat center;\n\tbackground-size:23px auto;\n\tposition: relative;\n\tright: -4px;\n\ttop:-2px\n}\n.backIcon{\n\twidth: 35px;\n\theight: 35px;\n\tdisplay: inline-block;\n\tposition: relative;\n\tleft: -2px;\n\ttop:0;\t\n\tfont-size: 1.4em;\n\tcolor: #fff\n}\n.backIcon::before{\n\tcontent: \"\\F060\";\n\tdisplay: inline-block;\n\tposition: relative;\n\tleft: 5px;\n\tfont-family: \"fontAwesome\";\n}\n.favIcon.on{\n\tbackground: url(" + __webpack_require__(198) + ")no-repeat center;\n\tbackground-size:23px auto;\n}\n.infoIcon{\n\twidth: 35px;\n\theight: 35px;\n\tdisplay: inline-block;\n\tbackground: url(" + __webpack_require__(199) + ")no-repeat center;\n\tbackground-size:22px auto;\n\tposition: relative;\n\ttop:-2px;\n\tmargin-right:6px\n}\n/********home button*********/\n.homeBtn{\n\tposition: fixed;\n\twidth: 55px;\n\theight: 55px;\n\tborder-radius: 50%;\n\tbackground-color: #0098db;\n\tbottom: -90px;\n\tleft: 50%;\n\tmargin-left: -25px;\n\tfont-family: 'fontAwesome';\n\tbox-shadow: 2px 1px 3px rgba(0,0,0,0.3);\n\ttransition: all 100ms linear\n}\n.homeBtn::after{\n\tcontent:\"\\F015\";\n\tfont-size: 30px;\n\tposition: relative;\n\tleft: 14px;\n\ttop: 12px;\n\tcolor: #fff\n}\n.homeBtn.animateHide{\n\t-webkit-animation-name: homeBtnAnimHide;\n\t        animation-name: homeBtnAnimHide;\n    -webkit-animation-duration: 600ms;\n            animation-duration: 600ms;\n\tbottom: -90px\n}\n\n@-webkit-keyframes homeBtnAnimHide {\n    0%   {bottom: 30px;}\n    35%  {bottom: 40px;}\n    100% {bottom: -90px;}\n}\n\n@keyframes homeBtnAnimHide {\n    0%   {bottom: 30px;}\n    35%  {bottom: 40px;}\n    100% {bottom: -90px;}\n}\n.homeBtn.animateShow{\n\t-webkit-animation-name: homeBtnAnimShow;\n\t        animation-name: homeBtnAnimShow;\n    -webkit-animation-duration: 600ms;\n            animation-duration: 600ms;\n\tbottom: 30px\n}\n@-webkit-keyframes homeBtnAnimShow {\n    0%   {bottom: -90px}\n    65%  {bottom: 40px}\n    100% {bottom: 30px}\n}\n@keyframes homeBtnAnimShow {\n    0%   {bottom: -90px}\n    65%  {bottom: 40px}\n    100% {bottom: 30px}\n}\n/*.homeBtn:active{\n\ttransform: scale(1.1, 1.1)\n}*/\n.wallInfo{\n\tbackground: rgba(0,0,0,0.3);\n\tcolor:#fff;\n\tfont-size:0.815em;\n\tpadding: 10px 4%;\n\tborder-radius: 3px;\n\tmargin:0 4%;\n\tdisplay:none\n}\n.wallInfo p{\n\tmargin-bottom:3px;\n\ttext-shadow:1px 1px 1px #333\n}\n@media only screen and (min-width: 320px) and (max-width:359px) {\n    .wallList .grid-wrapper a{\n\t\tmin-height:71px\n\t}\n}\n@media only screen and (min-width: 360px) and (max-width:400px){\n    .wallList .grid-wrapper a{\n\t\tmin-height:80px\n\t}\n}\n@media only screen and (min-width: 400px) {\n    .wallList .grid-wrapper a{\n\t\tmin-height:92px\n\t}\n}", ""]);
+exports.push([module.i, ".featuredWall{\n\tbackground-size:100% auto;\n\tbackground-repeat:no-repeat;\n\tbackground-position:center;\n\tz-index:3;\n\tposition:relative\n}\n.featuredWall img{\n\twidth:100%;\n\tdisplay:block\n}\n.wallList .grid-wrapper span{\n\twidth:100%;\n\tdisplay:block;\t\n\tmin-height:53px\n}\n.wallList .grid-wrapper span img{\n\twidth:100%;\n\tdisplay:block\n}\n.wallList .grid-wrapper span:active{\n\tbox-shadow: inset 0 0 12px 8px rgba(0,0,0,0.7);\n}\n#wallpopup{\n\tposition:fixed;\n\ttop:0;\n\tbottom:0;\n\twidth:100%;\n\tbackground-color:rgba(0,0,0,0.7);\n\tz-index:97;\n}\n#wallpopup .btns{\n\tposition:absolute;\n\tbottom:0;\n\twidth:100%;\n\tz-index:99;\n\tbackground-color:rgba(0,0,0,0.3);\n\ttransition: all 250ms linear\n}\n#wallpopup .btns span{\n\tcolor:#fff;\n\ttext-decoration:none;\n\ttext-align:center;\n\tdisplay:block;\n\tpadding:13px 0;\t\n\tfont-size:0.875em;\n\ttext-transform:uppercase;\n\t/*border-top:1px solid #999*/\n}\n#wallpopup.hideAll .btns{\n\tbottom:-46px\n}\n#wallpopup.hideAll .infoheader{\n\ttop:-46px\n}\n#imgscroller{\n\toverflow-x: scroll;\n}\n#imgwrapper img{\n\tdisplay:block;\n\twidth:200vw;\n\tmin-height:100vh\n}\n.infoheader{\n\tpadding: 10px 0;\n\tposition: absolute;\n    top: 0;\n    width: 100%;\n    z-index: 99;;\n\ttransition: all 250ms linear\n}\n.infoheader .grid-wrapper{\n\tpadding: 0 4% 10px\n}\n.infotext{\n\tfont-size:0.65em;\n\tcolor:#fff;\n}\n.favIcon{\n\twidth: 35px;\n\theight: 35px;\n\tdisplay: inline-block;\n\tbackground: url(" + __webpack_require__(198) + ")no-repeat center;\n\tbackground-size:23px auto;\n\tposition: relative;\n\tright: -4px;\n\ttop:-2px\n}\n.backIcon{\n\twidth: 35px;\n\theight: 35px;\n\tdisplay: inline-block;\n\tposition: relative;\n\tleft: -2px;\n\ttop:0;\t\n\tfont-size: 1.4em;\n\tcolor: #fff\n}\n.backIcon::before{\n\tcontent: \"\\F060\";\n\tdisplay: inline-block;\n\tposition: relative;\n\tleft: 5px;\n\tfont-family: \"fontAwesome\";\n}\n.favIcon.on{\n\tbackground: url(" + __webpack_require__(199) + ")no-repeat center;\n\tbackground-size:23px auto;\n}\n.infoIcon{\n\twidth: 35px;\n\theight: 35px;\n\tdisplay: inline-block;\n\tbackground: url(" + __webpack_require__(200) + ")no-repeat center;\n\tbackground-size:22px auto;\n\tposition: relative;\n\ttop:-2px;\n\tmargin-right:6px\n}\n/********home button*********/\n.homeBtn{\n\tposition: fixed;\n\twidth: 55px;\n\theight: 55px;\n\tborder-radius: 50%;\n\tbackground-color: #0098db;\n\tbottom: -90px;\n\tleft: 50%;\n\tmargin-left: -25px;\n\tfont-family: 'fontAwesome';\n\tbox-shadow: 2px 1px 3px rgba(0,0,0,0.3);\n\ttransition: all 100ms linear\n}\n.homeBtn::after{\n\tcontent:\"\\F015\";\n\tfont-size: 30px;\n\tposition: relative;\n\tleft: 14px;\n\ttop: 12px;\n\tcolor: #fff\n}\n.homeBtn.animateHide{\n\t-webkit-animation-name: homeBtnAnimHide;\n\t        animation-name: homeBtnAnimHide;\n    -webkit-animation-duration: 600ms;\n            animation-duration: 600ms;\n\tbottom: -90px\n}\n\n@-webkit-keyframes homeBtnAnimHide {\n    0%   {bottom: 30px;}\n    35%  {bottom: 40px;}\n    100% {bottom: -90px;}\n}\n\n@keyframes homeBtnAnimHide {\n    0%   {bottom: 30px;}\n    35%  {bottom: 40px;}\n    100% {bottom: -90px;}\n}\n.homeBtn.animateShow{\n\t-webkit-animation-name: homeBtnAnimShow;\n\t        animation-name: homeBtnAnimShow;\n    -webkit-animation-duration: 600ms;\n            animation-duration: 600ms;\n\tbottom: 30px\n}\n@-webkit-keyframes homeBtnAnimShow {\n    0%   {bottom: -90px}\n    65%  {bottom: 40px}\n    100% {bottom: 30px}\n}\n@keyframes homeBtnAnimShow {\n    0%   {bottom: -90px}\n    65%  {bottom: 40px}\n    100% {bottom: 30px}\n}\n/*.homeBtn:active{\n\ttransform: scale(1.1, 1.1)\n}*/\n.wallInfo{\n\tbackground: rgba(0,0,0,0.3);\n\tcolor:#fff;\n\tfont-size:0.815em;\n\tpadding: 10px 4%;\n\tborder-radius: 3px;\n\tmargin:0 4%;\n\tdisplay:none\n}\n.wallInfo p{\n\tmargin-bottom:3px;\n\ttext-shadow:1px 1px 1px #333\n}\n@media only screen and (min-width: 320px) and (max-width:359px) {\n    .wallList .grid-wrapper a{\n\t\tmin-height:71px\n\t}\n}\n@media only screen and (min-width: 360px) and (max-width:400px){\n    .wallList .grid-wrapper a{\n\t\tmin-height:80px\n\t}\n}\n@media only screen and (min-width: 400px) {\n    .wallList .grid-wrapper a{\n\t\tmin-height:92px\n\t}\n}", ""]);
 
 // exports
 
@@ -336,77 +374,77 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 160:
+/***/ 161:
 /***/ (function(module, exports) {
 
 module.exports = "<app-sidemenu></app-sidemenu>\n<app-navbar></app-navbar>\n<app-wallpaperlist></app-wallpaperlist>\n<app-popup></app-popup>\n<app-loader-popup></app-loader-popup>"
 
 /***/ }),
 
-/***/ 161:
+/***/ 162:
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"downProShow\" class=\"overlayScreen\" *ngIf=\"globals.downloadOverlayShow\">\n    <div class=\"downProgressWrapper\">\n      <p class=\"progress\"><span class=\"digits\">0</span></p>\n      <div class=\"progressBar\"><span></span></div>\n      <p class=\"text\">Starting download</p>\n    </div>\n    <span class=\"close icon\" (click)=\"globals.cancelDownload()\"></span>\n</div>\n"
 
 /***/ }),
 
-/***/ 162:
+/***/ 163:
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"loading\">\n  <img src=\"assets/images/mac-loader.svg\" alt=\"Loading...\">\n</div>\n"
 
 /***/ }),
 
-/***/ 163:
+/***/ 164:
 /***/ (function(module, exports) {
 
 module.exports = "<header class=\"main\" *ngIf=\"globals.showNavbar\">\n  <div class=\"grid-wrapper\">\n    <div class=\"cell1\"><span class=\"menu icon\" (click)=\"opmsrve.openMenu()\"></span></div>\n    <div class=\"cell4 center\"><img class=\"logo\" src=\"assets/images/wallpic-logo-white.png\" alt=\"Wallpic\"></div>\n    <div class=\"cell1 right\"></div>\n  </div>\n</header>\n"
 
 /***/ }),
 
-/***/ 164:
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"popup\" *ngIf=\"showpopup.popupVisible\" class=\"overlayScreen\">\n  <div class=\"popup simple hide\">\n    <h1>{{showpopup.popupHeader}}</h1>\n    <p>{{showpopup.popupMessage}}</p>\n    <div>\n      <span class=\"btn topMar\" (click)=\"showpopup.hidePopup()\">{{showpopup.popupButton}}</span>\n    </div>\n  </div>\n</div>\n"
-
-/***/ }),
-
 /***/ 165:
 /***/ (function(module, exports) {
 
-module.exports = "<nav>\n\t\t<span class=\"close icon\" (click)=\"clmsrve.closeMenu()\"></span>\t\t\t\t\n\t\t<ul class=\"categories\">\n\t\t\t<li><span (click)=\"setPipeFilter('abstract')\">Abstract</span></li>\n\t\t\t<li><span>Bikes</span></li>\n\t\t\t<li><span>Cars</span></li>\n\t\t\t<li><span>Movies</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('nature')\">Nature</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('people')\">People</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('places')\">Places</span></li>\n\t\t\t<li><span>Religious</span></li>\n\t\t\t<li><span>Space</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('misc')\">Miscellaneous</span></li>\t\t\t\t\t\n\t\t</ul>\t\n\t\t<ul>\n\t\t\t<li><span class=\"icon fav\" (click)=\"setPipeFilter('fav')\">Favorites ({{globals.favoritesCount}})</span></li>\n\t\t\t<li><span class=\"icon down\" (click)=\"showDownloadedWalls()\">Downloads ({{globals.downloadsCount}})</span></li>\n\t\t\t<li><span class=\"icon submit\" (click)=\"submitWallPic()\">Submit Wallpic</span></li>\n\t\t</ul>\t\t\n\t\t<div class=\"logo\">\n\t\t\t<img src=\"assets/images/wallpic-logo-blue.png\" alt=\"Wallpic\">\n\t\t</div>\n</nav>\n<div class=\"fadeScreen\" (click)=\"clmsrve.closeMenu()\"><span class=\"verNum\">v1.0</span></div>"
+module.exports = "<div id=\"popup\" *ngIf=\"showpopup.popupVisible\" class=\"overlayScreen\">\n  <div class=\"popup simple hide\">\n    <h1>{{showpopup.popupHeader}}</h1>\n    <p>{{showpopup.popupMessage}}</p>\n    <div>\n      <span class=\"btn topMar\" (click)=\"showpopup.hidePopup()\">{{showpopup.popupButton}}</span>\n    </div>\n  </div>\n</div>\n<div id=\"popup2\" *ngIf=\"showpopup.popup2Visible\" class=\"overlayScreen\">\n  <div class=\"popup simple hide submit\">\n    <h1>{{showpopup.popupHeader}}</h1>\n    <p>{{showpopup.popupMessage}}</p>\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\">\n        <span class=\"btn topMar prev\" (click)=\"showpopup.hidePopup()\">{{showpopup.popupButton}}</span>\n      </div>\n      <div class=\"cell3\">\n        <a href=\"mailto:wallpic@gmail.com?Subject=Wallpic submission\" class=\"btn topMar\" (click)=\"showpopup.hidePopup()\">{{showpopup.popupButton2}}</a>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
 /***/ 166:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"mainWalls\" *ngIf=\"globals.mainwalls\" class=\"wallList\" #container>\n  <div *ngIf=\"globals.showFeatured\">\n    <div class=\"featuredWall\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype | featured | slice:0:1\"  data-id=\"{{wallpaper.category + wallpaper.id}}\" >\n      <img src=\"{{wallpath.featpath + wallpaper.category}}{{wallpaper.id}}.jpg\" alt=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n      <div class=\"description\"></div>\n    </div>\n  </div>\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype\">\n      <span data-id=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img class=\"lazy\" attr.data-original=\"{{wallpath.thumbpath + wallpaper.category + wallpaper.id}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div id=\"wallpopup\" *ngIf=\"globals.popshow\">\n  <div id=\"imgwrapper\">\n    <div id=\"imgscroller\">\n      <img src=\"{{globals.Imgpath}}\" alt=\"\">\n    </div>\n  </div>    \n  <div class=\"infoheader\">\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><span class=\"backIcon\" (click)=\"closeWallPopup()\"></span></div>\n      <div class=\"cell3 right\"><span class=\"infoIcon\" (click)=\"showWallInfo()\"></span><span class=\"favIcon\" (click)=\"setFavorite()\"></span></div>\n    </div>\n    <div class=\"wallInfo\">\n      <p><strong>{{wallInfo.category+wallInfo.id}}</strong></p>\n      <p>Source/Author: John Doe</p>\n      <p>Downloads: 137</p>\n      <p>Favorites: 89</p>\n      <p>Tags: #nature #green</p>\n    </div>\n  </div>\n  <div class=\"btns\">\t\t\t\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><span *ngIf=\"!wallisDownload\" (click)=\"downloadWallpaper()\">Download</span><span *ngIf=\"wallisDownload\" (click)=\"deleteWallpaper()\">Delete</span></div>\n      <div class=\"cell3\"><span (click)=\"setWallpaper()\">Set Wallpaper</span></div>\n    </div>\n  </div>\n</div>\n<div id=\"downloadedWalls\" *ngIf=\"globals.downloadedwalls\" class=\"wallList\">\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of downloadedIds\">\n      <span data-id=\"{{wallpaper}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img src=\"/storage/emulated/0/wallpic/thumbs/{{wallpaper}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div class=\"homeBtn\" (click)=\"globals.resetPipe()\"></div>\n<app-download-overlay></app-download-overlay>"
+module.exports = "<nav>\n\t\t<span class=\"close icon\" (click)=\"clmsrve.closeMenu()\"></span>\t\t\t\t\n\t\t<ul class=\"categories\">\n\t\t\t<li><span (click)=\"setPipeFilter('abstract')\">Abstract</span></li>\n\t\t\t<li><span>Bikes</span></li>\n\t\t\t<li><span>Cars</span></li>\n\t\t\t<li><span>Movies</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('nature')\">Nature</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('people')\">People</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('places')\">Places</span></li>\n\t\t\t<li><span>Religious</span></li>\n\t\t\t<li><span>Space</span></li>\n\t\t\t<li><span (click)=\"setPipeFilter('misc')\">Miscellaneous</span></li>\t\t\t\t\t\n\t\t</ul>\t\n\t\t<ul>\n\t\t\t<li><span class=\"icon fav\" (click)=\"setPipeFilter('fav')\">Favorites ({{globals.favoritesCount}})</span></li>\n\t\t\t<li><span class=\"icon down\" (click)=\"showDownloadedWalls()\">Downloads ({{globals.downloadsCount}})</span></li>\n\t\t\t<li><span class=\"icon submit\" (click)=\"submitWallPic()\">Submit Wallpic</span></li>\n\t\t</ul>\t\t\n\t\t<div class=\"logo\">\n\t\t\t<img src=\"assets/images/wallpic-logo-blue.png\" alt=\"Wallpic\">\n\t\t</div>\n</nav>\n<div class=\"fadeScreen\" (click)=\"clmsrve.closeMenu()\"><span class=\"verNum\">v1.0</span></div>"
 
 /***/ }),
 
-/***/ 197:
+/***/ 167:
 /***/ (function(module, exports) {
 
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjUwNTlCMDM1NzE1MTFFN0E5ODE5OEQ4RkQ5MzY1RUQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjUwNTlCMDQ1NzE1MTFFN0E5ODE5OEQ4RkQ5MzY1RUQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2NTA1OUIwMTU3MTUxMUU3QTk4MTk4RDhGRDkzNjVFRCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2NTA1OUIwMjU3MTUxMUU3QTk4MTk4RDhGRDkzNjVFRCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PjezM0gAAAJGSURBVHja7NjPSxRhHMdxJ9qCAiGwFYxFlkDzULAmePLkIQoTz5066KFjf0IRXkyqQ7foVkdZ8tch8tKlZLWDh1pCV1kQ9JB18BCh2/uJj7HszOw8szM7u1APvBh053m+H8dnn32edSqVSkc7tVMdbdbaLtBpy/suoxc/UMa+Zb9uZNCJHWwG9jBzqI5plLCJFaxhHwWM1ul3C5+wp3tXNEZJY/rW9HshjXW8Qtbj9SG8wxzOVf2+S8WXkPPol9WY66phFcjcuI3BgKdnPMYyUupnnspDi36DquEK5Xi87d/gha427Rm2kMU2nlr2G8ekrr5zaAJ5i7+w9okeYQtnQvbNq6bvv+w9RkIOGsWIanoGyqCcYJgTZdX+83P1wjiEQgvWwoJqu1ZqMylLLQhUUm1XoF9ItSBQSrVdgXb08ZB061VtV6Ai+lsQqF+1PQM56EswTJ9qFv22H3lMJRhoSjX/ttqPjvM40LbhoMlhLmBP10O/J2RemMFsAk9nVrUObfZDCxhr4uo8phqh9kOfMdCEMFfwJcx+qDpUEcMxhjFjffULExToJNRHPIohzLTGSte7L+jUYTbzN3EdTyJM4Oe4hhtBBwSbY9A3TGgpeBkyyFm81nJyG9/jOpf9xB1d51QgqHVhXmvNXfOGbsZB8Z7OVou4WOe+NN7iA+6HqtDgBH2ADZ8JmtZ5LNfI2FHeNVexWxPqEo7R3ei4TsRvP3q048too7WKXIijtqs5MXwdY+bLriZvpDBxBfr//dC/Hei3AAMAUy+EDk2KqN4AAAAASUVORK5CYII="
+module.exports = "<div id=\"mainWalls\" *ngIf=\"globals.mainwalls\" class=\"wallList\" #container>\n  <div *ngIf=\"globals.showFeatured\">\n    <div class=\"featuredWall\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype | featured | slice:0:1\"  data-id=\"{{wallpaper.category + wallpaper.id}}\" >\n      <img src=\"{{wallpath.featpath + wallpaper.category}}{{wallpaper.id}}.jpg\" alt=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n      <div class=\"description\"></div>\n    </div>\n  </div>\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of walllist | main:globals.pipetype\">\n      <span data-id=\"{{wallpaper.category + wallpaper.id}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img class=\"lazy\" attr.data-original=\"{{wallpath.thumbpath + wallpaper.category + wallpaper.id}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div id=\"wallpopup\" *ngIf=\"globals.popshow\">\n  <div id=\"imgwrapper\">\n    <div id=\"imgscroller\">\n      <img src=\"{{globals.Imgpath}}\" alt=\"\">\n    </div>\n  </div>    \n  <div class=\"infoheader\">\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><span class=\"backIcon\" (click)=\"closeWallPopup()\"></span></div>\n      <div class=\"cell3 right\"><span class=\"infoIcon\" (click)=\"showWallInfo()\"></span><span class=\"favIcon\" (click)=\"setFavorite()\"></span></div>\n    </div>\n    <div class=\"wallInfo\">\n      <p><strong>{{wallInfo.category+wallInfo.id}}</strong></p>\n      <p>Source/Author: {{wallInfo.photographer}}</p>\n      <p>Downloads: {{wallInfo.downloads}}</p>\n      <p>Favorites: {{wallInfo.favorites}}</p>\n      <p>Tags: {{wallInfo.tag}}</p>\n    </div>\n  </div>\n  <div class=\"btns\">\t\t\t\n    <div class=\"grid-wrapper\">\n      <div class=\"cell3\"><span *ngIf=\"!wallisDownload\" (click)=\"downloadWallpaper()\">Download</span><span *ngIf=\"wallisDownload\" (click)=\"deleteWallpaper()\">Delete</span></div>\n      <div class=\"cell3\"><span (click)=\"setWallpaper()\">Set Wallpaper</span></div>\n    </div>\n  </div>\n</div>\n<div id=\"downloadedWalls\" *ngIf=\"globals.downloadedwalls\" class=\"wallList\">\n  <div class=\"grid-wrapper\">\n    <div class=\"cell2\" *ngFor=\"let wallpaper of downloadedIds\">\n      <span data-id=\"{{wallpaper}}\" (click)=\"loadWallpaperSrc(wallpaper)\">\n        <img src=\"{{globals.downloadPath}}/thumbs/{{wallpaper}}.jpg\" alt=\"\">\n      </span>\t\t\t\t\t\n    </div>\n    <div style=\"clear:both\"></div>\n  </div>\n</div>\n<div class=\"homeBtn\" (click)=\"globals.resetPipe()\"></div>\n<app-download-overlay></app-download-overlay>"
 
 /***/ }),
 
 /***/ 198:
 /***/ (function(module, exports) {
 
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NkY1NEI3RjY1NzE1MTFFNzkwOUZFRjI0RkNGMkM3REYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NkY1NEI3Rjc1NzE1MTFFNzkwOUZFRjI0RkNGMkM3REYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2RjU0QjdGNDU3MTUxMUU3OTA5RkVGMjRGQ0YyQzdERiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2RjU0QjdGNTU3MTUxMUU3OTA5RkVGMjRGQ0YyQzdERiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpuSt2cAAALcSURBVHja7Ji9SxtxGMeflJi0idSmxFgroYSijUMHJeDkP1BE+jd0yla3ziUIlg4WjC04lC5Ch6JDJxGHULAgpEsHK2glhNRqjJc7TcjL5Z4+T05p1EvuLi9HBg++y/F7ns/njssvz50NEaGbjlvQZUfXCdkNrntMeUQRKUnKkcG6AYqfcpeSoOy1JlQqvYFi8QXk87chmZShr88Gg4MOKJdT4PGEacVGncpnIAhRsNsfwMFBCSQJwe+3g8tVAKfzIzgcr+oy+aHWiA9PTvZwZUXCQIAf+8sJhRC3tgRMpzdoraumzkvnfmAslsWxset13It7cm9maLC1ZSTpGMfHrze8mvn5Eh4dfaeanvOL+I2RiKJbx72ZoSF1XSidjuH0tL7MRRYXC1T3Ek9PP+DMjPE6ZjBLR+g5rq9nDTfl+OgiFUXBw8NTdDjQVC2zmFlX6Pj4J05OmmvaSpjFzDpCfsxkziyTuQgzmX3uUbsxhiAely3fCVVmSGunDsD29h3LhVRmQEuoTJuWYrmQyixrCSVgeLhouZDKTGgJ7UAwaP2frcrc0Rbq7c3ByIh1MsxiZh0hgJ6ezxAOly0TYhYzG/y5urFSkdHj6fz+wwxmMbPG4eozkwNFeQvRaK7jd4cZzGKm7viRTn/DqanO3R3uzQyD44c6gghCCkdH2y8TDCKKYsrMPPRfShT/4MRE+2S4lyj+rSejJ6RKZTK/cHa20rLM3Jxc7dVAxogQ5351KlxYKDQts7SUP39m7unxjAhxnDS3fMXlZXPjidOJuLoq0Z35Qj1sRlhGhdSI4idcW8ui260v4/Uibm4KNNq+N8MwJ8TJ599hPC5gf3/jsXZ3N0sbX8Rsf/NCal7j/r5YBWvJSFKe1ow107tZIc5T2qtyl6SGhug0KpSBZvu2IsR5iLIsV6VY5uxM0PtZ68XWhs8xPup0QK/bErjdT0y892setpvvQzdCLR7/BBgA3JTwVwwedLMAAAAASUVORK5CYII="
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjUwNTlCMDM1NzE1MTFFN0E5ODE5OEQ4RkQ5MzY1RUQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjUwNTlCMDQ1NzE1MTFFN0E5ODE5OEQ4RkQ5MzY1RUQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2NTA1OUIwMTU3MTUxMUU3QTk4MTk4RDhGRDkzNjVFRCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2NTA1OUIwMjU3MTUxMUU3QTk4MTk4RDhGRDkzNjVFRCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PjezM0gAAAJGSURBVHja7NjPSxRhHMdxJ9qCAiGwFYxFlkDzULAmePLkIQoTz5066KFjf0IRXkyqQ7foVkdZ8tch8tKlZLWDh1pCV1kQ9JB18BCh2/uJj7HszOw8szM7u1APvBh053m+H8dnn32edSqVSkc7tVMdbdbaLtBpy/suoxc/UMa+Zb9uZNCJHWwG9jBzqI5plLCJFaxhHwWM1ul3C5+wp3tXNEZJY/rW9HshjXW8Qtbj9SG8wxzOVf2+S8WXkPPol9WY66phFcjcuI3BgKdnPMYyUupnnspDi36DquEK5Xi87d/gha427Rm2kMU2nlr2G8ekrr5zaAJ5i7+w9okeYQtnQvbNq6bvv+w9RkIOGsWIanoGyqCcYJgTZdX+83P1wjiEQgvWwoJqu1ZqMylLLQhUUm1XoF9ItSBQSrVdgXb08ZB061VtV6Ai+lsQqF+1PQM56EswTJ9qFv22H3lMJRhoSjX/ttqPjvM40LbhoMlhLmBP10O/J2RemMFsAk9nVrUObfZDCxhr4uo8phqh9kOfMdCEMFfwJcx+qDpUEcMxhjFjffULExToJNRHPIohzLTGSte7L+jUYTbzN3EdTyJM4Oe4hhtBBwSbY9A3TGgpeBkyyFm81nJyG9/jOpf9xB1d51QgqHVhXmvNXfOGbsZB8Z7OVou4WOe+NN7iA+6HqtDgBH2ADZ8JmtZ5LNfI2FHeNVexWxPqEo7R3ei4TsRvP3q048too7WKXIijtqs5MXwdY+bLriZvpDBxBfr//dC/Hei3AAMAUy+EDk2KqN4AAAAASUVORK5CYII="
 
 /***/ }),
 
 /***/ 199:
 /***/ (function(module, exports) {
 
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NkY1NEI3RjY1NzE1MTFFNzkwOUZFRjI0RkNGMkM3REYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NkY1NEI3Rjc1NzE1MTFFNzkwOUZFRjI0RkNGMkM3REYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2RjU0QjdGNDU3MTUxMUU3OTA5RkVGMjRGQ0YyQzdERiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2RjU0QjdGNTU3MTUxMUU3OTA5RkVGMjRGQ0YyQzdERiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpuSt2cAAALcSURBVHja7Ji9SxtxGMeflJi0idSmxFgroYSijUMHJeDkP1BE+jd0yla3ziUIlg4WjC04lC5Ch6JDJxGHULAgpEsHK2glhNRqjJc7TcjL5Z4+T05p1EvuLi9HBg++y/F7ns/njssvz50NEaGbjlvQZUfXCdkNrntMeUQRKUnKkcG6AYqfcpeSoOy1JlQqvYFi8QXk87chmZShr88Gg4MOKJdT4PGEacVGncpnIAhRsNsfwMFBCSQJwe+3g8tVAKfzIzgcr+oy+aHWiA9PTvZwZUXCQIAf+8sJhRC3tgRMpzdoraumzkvnfmAslsWxset13It7cm9maLC1ZSTpGMfHrze8mvn5Eh4dfaeanvOL+I2RiKJbx72ZoSF1XSidjuH0tL7MRRYXC1T3Ek9PP+DMjPE6ZjBLR+g5rq9nDTfl+OgiFUXBw8NTdDjQVC2zmFlX6Pj4J05OmmvaSpjFzDpCfsxkziyTuQgzmX3uUbsxhiAely3fCVVmSGunDsD29h3LhVRmQEuoTJuWYrmQyixrCSVgeLhouZDKTGgJ7UAwaP2frcrc0Rbq7c3ByIh1MsxiZh0hgJ6ezxAOly0TYhYzG/y5urFSkdHj6fz+wwxmMbPG4eozkwNFeQvRaK7jd4cZzGKm7viRTn/DqanO3R3uzQyD44c6gghCCkdH2y8TDCKKYsrMPPRfShT/4MRE+2S4lyj+rSejJ6RKZTK/cHa20rLM3Jxc7dVAxogQ5351KlxYKDQts7SUP39m7unxjAhxnDS3fMXlZXPjidOJuLoq0Z35Qj1sRlhGhdSI4idcW8ui260v4/Uibm4KNNq+N8MwJ8TJ599hPC5gf3/jsXZ3N0sbX8Rsf/NCal7j/r5YBWvJSFKe1ow107tZIc5T2qtyl6SGhug0KpSBZvu2IsR5iLIsV6VY5uxM0PtZ68XWhs8xPup0QK/bErjdT0y892setpvvQzdCLR7/BBgA3JTwVwwedLMAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 200:
+/***/ (function(module, exports) {
+
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6N0MyMTY2RkE2OTMwMTFFNzg2QzZFNENERjdDM0E3REQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6N0MyMTY2Rjk2OTMwMTFFNzg2QzZFNENERjdDM0E3REQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2NTA1OUIwMzU3MTUxMUU3QTk4MTk4RDhGRDkzNjVFRCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2NTA1OUIwNDU3MTUxMUU3QTk4MTk4RDhGRDkzNjVFRCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqsVmQ4AAAI5SURBVHja5Ni9TxRBGMdxzuALxgskcEunUe5aY84YKGyIgQKoiIX/AgKtUGErf4CV9lgoDVCAITZamQBHqMCXgDHGI5DzpZHm+I75bXK3e7A3e97uGib5NLc78zw7e7PzkiqXyy1JKudaElZaQ9S5gmH04xauo13XfuAzNvAGS/ht03jK4pVlMYX7eIvXeI9PKOmeDtzAHQzgLl5iFh/qimISCnAJT/Adj5Gpo46rS3VM3Vm1dWqdoAZ7sI45dFsk4tWtNkxb2bAJ5fEVYw0k4jWmNvO2CZmn+IbRf5iMa1RtZ+tNqA0bmGhCMq5xFBSr6lqtUWZGxDU8aPIn5wV2NXJPHGXmT1yEY/nEbrGp4yhW1avzfqmn8RTFCD7KRcWaPqmH0ji0/M40KqOY6Vo9NIR32I9w6tpXzKFak+s9rIRsuCxhyrJi+xK6ibUYJvg1xfYl1IPtGBLaUWzfbP8HaRyFfGV/2wtR9wJ+4WIiF2iVCf2sWGhFWdoV25fQR+RiSCin2L6ENnE7hoTyiu1LaBWDMSQ0qNi+UZbW7Gu68CCiUZbRp+aqRlpVD5kf5jERYe88xCs3mVrLj2yEy4+MYuWSskCbwxc8CtoGtWl5OR7BEvbyf7nIT+Q2qLKnCtrkOQ0k4qiNQtBGMWhyNfvxXuxhCzPotPjjdqrOltroDdzjWzylGZ7PUMICJtGnpz8vjn6b1D3m3ufeoX2aVIgDK3McM+I5junQtZLnOGaxmccxZ/ME7ViAAQDeFgD1tR/0dQAAAABJRU5ErkJggg=="
 
 /***/ }),
 
-/***/ 201:
+/***/ 202:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(81);
@@ -617,13 +655,13 @@ OpenmenuService = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__showpopup_service__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_throw__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_throw__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_throw___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_throw__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_do__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_do__ = __webpack_require__(172);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_do__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WalllistService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -649,13 +687,64 @@ var WalllistService = (function () {
         this.showpopup = showpopup;
     }
     WalllistService.prototype.getWalllist = function () {
-        return this.http.get('http://ssgmkharda.in/wallpic/fetchwall.php').map(function (response) { return response.json(); }).catch(this.handleError);
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]();
+        headers.append('Accept', 'application/json');
+        return this.http.get('http://ssgmkharda.in/wallpic/fetchwall.php', { headers: headers }).map(function (response) { return response.json(); }).catch(this.handleError);
+        //return this.http.get('http://localhost/wallpic-upload/fetchwall.php').map((response: Response)=> response.json()).catch(this.handleError);
         //return this.http.get('http://ssgmkharda.in/wallpic/fetchwall.php').subscribe((response: Response)=> response.json()).catch(this.handleError);
         // return this.http.get('http://ssgmkharda.in/wallpic/fetchwall.php').subscribe(
         //     (response: Response)=> response.json(),err => {
         //     console.log('Something went wrong!');
         //     }
         // );
+    };
+    WalllistService.prototype.updatedDownlist = function (wallidd) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]();
+        headers.append('Content-Type', 'application/json');
+        this.http.post('http://ssgmkharda.in/wallpic/updateDownCount.php', { wallid: wallidd }, {
+            headers: headers
+        })
+            .subscribe(function (data) {
+            console.log('Request sent to Down php file.');
+        }, function (error) {
+            console.log(JSON.stringify(error.json()));
+        });
+    };
+    WalllistService.prototype.updateUseCountlist = function (wallidd) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]();
+        headers.append('Content-Type', 'application/json');
+        this.http.post('http://ssgmkharda.in/wallpic/updateUseCount.php', { wallid: wallidd }, {
+            headers: headers
+        })
+            .subscribe(function (data) {
+            console.log('Request sent to Use count php file.');
+        }, function (error) {
+            console.log(JSON.stringify(error.json()));
+        });
+    };
+    WalllistService.prototype.addFavlist = function (wallidd) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]();
+        headers.append('Content-Type', 'application/json');
+        this.http.post('http://ssgmkharda.in/wallpic/addFavCount.php', { wallid: wallidd }, {
+            headers: headers
+        })
+            .subscribe(function (data) {
+            console.log('Request sent to Fav php file.');
+        }, function (error) {
+            console.log(JSON.stringify(error.json()));
+        });
+    };
+    WalllistService.prototype.removeFavlist = function (wallidd) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]();
+        headers.append('Content-Type', 'application/json');
+        this.http.post('http://ssgmkharda.in/wallpic/removeFavCount.php', { wallid: wallidd }, {
+            headers: headers
+        })
+            .subscribe(function (data) {
+            console.log('Request sent to Fav php file.');
+        }, function (error) {
+            console.log(JSON.stringify(error.json()));
+        });
     };
     WalllistService.prototype.handleError = function (error) {
         var head = "Error!";
@@ -671,7 +760,7 @@ var WalllistService = (function () {
 }());
 WalllistService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__showpopup_service__["a" /* ShowpopupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__showpopup_service__["a" /* ShowpopupService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__showpopup_service__["a" /* ShowpopupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__showpopup_service__["a" /* ShowpopupService */]) === "function" && _b || Object])
 ], WalllistService);
 
 var _a, _b;
@@ -714,6 +803,7 @@ var WallpathService = (function () {
         this.featpath = "";
         this.os = "android";
         this.path = "http://ssgmkharda.in/wallpic/";
+        //path = "http://localhost/wallpic-upload/";
         this.wallfolder = "";
         this.imgpath = "value1";
         /*get windows width*/
@@ -791,7 +881,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(99);
 
 
 
@@ -860,8 +950,8 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Component */])({
         selector: 'app-root',
-        template: __webpack_require__(160),
-        styles: [__webpack_require__(152)]
+        template: __webpack_require__(161),
+        styles: [__webpack_require__(153)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_checkinternet_service__["a" /* CheckinternetService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_checkinternet_service__["a" /* CheckinternetService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_showpopup_service__["a" /* ShowpopupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_showpopup_service__["a" /* ShowpopupService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_backbutton_service__["a" /* BackbuttonService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_backbutton_service__["a" /* BackbuttonService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_globals_service__["a" /* GlobalsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_globals_service__["a" /* GlobalsService */]) === "function" && _d || Object])
 ], AppComponent);
@@ -880,23 +970,24 @@ var _a, _b, _c, _d;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__wallpaperlist_wallpaperlist_component__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__wallpaperlist_wallpaperlist_component__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__navbar_navbar_component__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__download_overlay_download_overlay_component__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__popup_popup_component__ = __webpack_require__(92);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__loader_popup_loader_popup_component__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shared_wall_featured_filter_pipe__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_limit_to_pipe__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_main_pipe__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_wallpaperlist_service__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__sidemenu_sidemenu_component__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_openmenu_service__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_closemenu_service__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_wallpath_service__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_globals_service__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__services_checkinternet_service__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__services_showpopup_service__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_backbutton_service__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shared_wall_featured_filter_pipe__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_limit_to_pipe__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_favorites_pipe__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_main_pipe__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_wallpaperlist_service__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__sidemenu_sidemenu_component__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_openmenu_service__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_closemenu_service__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_wallpath_service__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__services_globals_service__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__services_checkinternet_service__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_showpopup_service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__services_backbutton_service__ = __webpack_require__(54);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -926,7 +1017,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-//import { WallpopupComponent } from './wallpopup/wallpopup.component';
+
 var AppModule = (function () {
     function AppModule() {
     }
@@ -940,18 +1031,19 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_6__navbar_navbar_component__["a" /* NavbarComponent */],
             __WEBPACK_IMPORTED_MODULE_10__shared_wall_featured_filter_pipe__["a" /* FeaturedPipe */],
             __WEBPACK_IMPORTED_MODULE_11__shared_limit_to_pipe__["a" /* TruncatePipe */],
-            __WEBPACK_IMPORTED_MODULE_14__sidemenu_sidemenu_component__["a" /* SidemenuComponent */],
-            __WEBPACK_IMPORTED_MODULE_12__shared_main_pipe__["a" /* MainPipe */],
+            __WEBPACK_IMPORTED_MODULE_15__sidemenu_sidemenu_component__["a" /* SidemenuComponent */],
+            __WEBPACK_IMPORTED_MODULE_13__shared_main_pipe__["a" /* MainPipe */],
             __WEBPACK_IMPORTED_MODULE_7__download_overlay_download_overlay_component__["a" /* DownloadOverlayComponent */],
             __WEBPACK_IMPORTED_MODULE_8__popup_popup_component__["a" /* PopupComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__loader_popup_loader_popup_component__["a" /* LoaderPopupComponent */]
+            __WEBPACK_IMPORTED_MODULE_9__loader_popup_loader_popup_component__["a" /* LoaderPopupComponent */],
+            __WEBPACK_IMPORTED_MODULE_12__shared_favorites_pipe__["a" /* FavoritesPipe */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */]
         ],
-        providers: [__WEBPACK_IMPORTED_MODULE_13__services_wallpaperlist_service__["a" /* WalllistService */], __WEBPACK_IMPORTED_MODULE_15__services_openmenu_service__["a" /* OpenmenuService */], __WEBPACK_IMPORTED_MODULE_16__services_closemenu_service__["a" /* ClosemenuService */], __WEBPACK_IMPORTED_MODULE_17__services_wallpath_service__["a" /* WallpathService */], __WEBPACK_IMPORTED_MODULE_18__services_globals_service__["a" /* GlobalsService */], __WEBPACK_IMPORTED_MODULE_19__services_checkinternet_service__["a" /* CheckinternetService */], __WEBPACK_IMPORTED_MODULE_20__services_showpopup_service__["a" /* ShowpopupService */], __WEBPACK_IMPORTED_MODULE_21__services_backbutton_service__["a" /* BackbuttonService */]],
+        providers: [__WEBPACK_IMPORTED_MODULE_14__services_wallpaperlist_service__["a" /* WalllistService */], __WEBPACK_IMPORTED_MODULE_16__services_openmenu_service__["a" /* OpenmenuService */], __WEBPACK_IMPORTED_MODULE_17__services_closemenu_service__["a" /* ClosemenuService */], __WEBPACK_IMPORTED_MODULE_18__services_wallpath_service__["a" /* WallpathService */], __WEBPACK_IMPORTED_MODULE_19__services_globals_service__["a" /* GlobalsService */], __WEBPACK_IMPORTED_MODULE_20__services_checkinternet_service__["a" /* CheckinternetService */], __WEBPACK_IMPORTED_MODULE_21__services_showpopup_service__["a" /* ShowpopupService */], __WEBPACK_IMPORTED_MODULE_22__services_backbutton_service__["a" /* BackbuttonService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
@@ -989,8 +1081,8 @@ var DownloadOverlayComponent = (function () {
 DownloadOverlayComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Component */])({
         selector: 'app-download-overlay',
-        template: __webpack_require__(161),
-        styles: [__webpack_require__(153)]
+        template: __webpack_require__(162),
+        styles: [__webpack_require__(154)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_globals_service__["a" /* GlobalsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_globals_service__["a" /* GlobalsService */]) === "function" && _a || Object])
 ], DownloadOverlayComponent);
@@ -1026,8 +1118,8 @@ var LoaderPopupComponent = (function () {
 LoaderPopupComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Component */])({
         selector: 'app-loader-popup',
-        template: __webpack_require__(162),
-        styles: [__webpack_require__(154)]
+        template: __webpack_require__(163),
+        styles: [__webpack_require__(155)]
     }),
     __metadata("design:paramtypes", [])
 ], LoaderPopupComponent);
@@ -1072,8 +1164,8 @@ var NavbarComponent = (function () {
 NavbarComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Component */])({
         selector: 'app-navbar',
-        template: __webpack_require__(163),
-        styles: [__webpack_require__(155)]
+        template: __webpack_require__(164),
+        styles: [__webpack_require__(156)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_openmenu_service__["a" /* OpenmenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_openmenu_service__["a" /* OpenmenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_globals_service__["a" /* GlobalsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_globals_service__["a" /* GlobalsService */]) === "function" && _b || Object])
 ], NavbarComponent);
@@ -1112,8 +1204,8 @@ var PopupComponent = (function () {
 PopupComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Component */])({
         selector: 'app-popup',
-        template: __webpack_require__(164),
-        styles: [__webpack_require__(156)]
+        template: __webpack_require__(165),
+        styles: [__webpack_require__(157)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_showpopup_service__["a" /* ShowpopupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_showpopup_service__["a" /* ShowpopupService */]) === "function" && _a || Object])
 ], PopupComponent);
@@ -1124,6 +1216,47 @@ var _a;
 /***/ }),
 
 /***/ 93:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FavoritesPipe; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var FavoritesPipe = (function () {
+    function FavoritesPipe() {
+    }
+    FavoritesPipe.prototype.transform = function (items, item) {
+        //not using this pipe anymore
+        // item = items.filter(checkFav);
+        // return item;
+        // function checkFav(wallpaper){    
+        //   var storedId = JSON.parse(localStorage.getItem("favorites"));
+        //   var wallName = wallpaper.category + wallpaper.id;  
+        //   //console.log("fav"+wallName);
+        //   if(storedId.indexOf(wallName) > -1){
+        //     return wallpaper;
+        //   }
+        // }
+    };
+    return FavoritesPipe;
+}());
+FavoritesPipe = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["W" /* Pipe */])({
+        name: 'favorites'
+    })
+], FavoritesPipe);
+
+//# sourceMappingURL=favorites.pipe.js.map
+
+/***/ }),
+
+/***/ 94:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1156,7 +1289,7 @@ TruncatePipe = __decorate([
 
 /***/ }),
 
-/***/ 94:
+/***/ 95:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1217,7 +1350,7 @@ MainPipe = __decorate([
 
 /***/ }),
 
-/***/ 95:
+/***/ 96:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1267,7 +1400,7 @@ FeaturedPipe = __decorate([
 
 /***/ }),
 
-/***/ 96:
+/***/ 97:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1349,8 +1482,8 @@ __decorate([
 SidemenuComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Component */])({
         selector: 'app-sidemenu',
-        template: __webpack_require__(165),
-        styles: [__webpack_require__(157)],
+        template: __webpack_require__(166),
+        styles: [__webpack_require__(158)],
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_closemenu_service__["a" /* ClosemenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_closemenu_service__["a" /* ClosemenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_globals_service__["a" /* GlobalsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_globals_service__["a" /* GlobalsService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_showpopup_service__["a" /* ShowpopupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_showpopup_service__["a" /* ShowpopupService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* NgZone */]) === "function" && _d || Object])
 ], SidemenuComponent);
@@ -1360,7 +1493,7 @@ var _a, _b, _c, _d;
 
 /***/ }),
 
-/***/ 97:
+/***/ 98:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1428,6 +1561,7 @@ var WallpaperlistComponent = (function () {
         /*download wallpaper*/
         this.downloadWallpaper = function () {
             console.log("Inside download wall.");
+            //update download count
             _this.globals.wallDownloadMethod = new FileTransfer();
             var thumbDownload = new FileTransfer();
             var uri = encodeURI(_this.globals.Imgpath);
@@ -1447,6 +1581,7 @@ var WallpaperlistComponent = (function () {
                 window['plugins'].toast.showShortBottom('Wallpaper downloaded!');
                 _this.updateDownloadList(_this.localwallpaperId);
                 console.log("download complete: " + entry.toURL());
+                _this.walllistService.updatedDownlist(_this.wallId);
                 _this._ngZone.run(function () {
                     _this.wallisDownload = true;
                 });
@@ -1510,8 +1645,8 @@ var WallpaperlistComponent = (function () {
         if (this.globals.downloadedwalls) {
             this.localwallpaperId = wallpaper;
             this.wallId = wallpaper;
-            this.globals.Imgpath = '/storage/emulated/0/wallpic/' + this.localwallpaperId + ".jpg";
-            this.globals.thumbpath = '/storage/emulated/0/wallpic/thumbs' + this.localwallpaperId + ".jpg";
+            this.globals.Imgpath = this.globals.downloadPath + '/' + this.localwallpaperId + ".jpg";
+            this.globals.thumbpath = this.globals.downloadPath + '/thumbs/' + this.localwallpaperId + ".jpg";
         }
         ;
         //check if the wallpaper is already downloaded           
@@ -1579,6 +1714,7 @@ var WallpaperlistComponent = (function () {
                 localStorage.setItem("favorites", JSON.stringify(storedIds));
                 __WEBPACK_IMPORTED_MODULE_5_jquery___default()(".favIcon").removeClass("on");
                 console.log("removed " + this.localwallpaperId);
+                this.walllistService.removeFavlist(this.wallId);
                 //alert("Removed from favorites");
             }
             else {
@@ -1586,6 +1722,7 @@ var WallpaperlistComponent = (function () {
                 storedIds.push(this.localwallpaperId);
                 localStorage.setItem("favorites", JSON.stringify(storedIds));
                 __WEBPACK_IMPORTED_MODULE_5_jquery___default()(".favIcon").addClass("on");
+                this.walllistService.addFavlist(this.wallId);
                 //alert("Added to the favorites!");
             }
         }
@@ -1670,6 +1807,7 @@ var WallpaperlistComponent = (function () {
             setTimeout(function () {
                 window['plugins'].wallpaper.setImage(_this.localwallpaperId + ".jpg");
                 window['plugins'].toast.showShortBottom("Wallpaper set!");
+                _this.walllistService.updateUseCountlist(_this.wallId);
             }, 300);
             //window['plugins'].wallpaper.setImage(this.localwallpaperId+".jpg");
             setTimeout(function () { _this.showpopup.hideLoader(); }, 2500);
@@ -1719,7 +1857,7 @@ var WallpaperlistComponent = (function () {
                 return array;
             }
             _this.showpopup.hideLoader();
-            setTimeout(function () { _this.globals.lazyLoadStart(); }, 500);
+            setTimeout(function () { _this.globals.lazyLoadStart(); _this.globals.checkOSversion(); }, 500);
             setTimeout(function () { _this.globals.checkWritePerm(); }, 2000);
             //clearTimeout(this.globals.noInternetTimeout);
             //walllist => this.walllist = walllist.records
@@ -1730,8 +1868,8 @@ var WallpaperlistComponent = (function () {
 WallpaperlistComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Component */])({
         selector: 'app-wallpaperlist',
-        template: __webpack_require__(166),
-        styles: [__webpack_require__(158)],
+        template: __webpack_require__(167),
+        styles: [__webpack_require__(159)],
         inputs: ['pipetype']
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_wallpaperlist_service__["a" /* WalllistService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_wallpaperlist_service__["a" /* WalllistService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_wallpath_service__["a" /* WallpathService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_wallpath_service__["a" /* WallpathService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_globals_service__["a" /* GlobalsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_globals_service__["a" /* GlobalsService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_showpopup_service__["a" /* ShowpopupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_showpopup_service__["a" /* ShowpopupService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* NgZone */]) === "function" && _e || Object])
@@ -1742,7 +1880,7 @@ var _a, _b, _c, _d, _e;
 
 /***/ }),
 
-/***/ 98:
+/***/ 99:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1759,5 +1897,5 @@ var environment = {
 
 /***/ })
 
-},[201]);
+},[202]);
 //# sourceMappingURL=main.bundle.js.map

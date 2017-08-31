@@ -118,6 +118,9 @@ strong{
 	background-color: #fff;
 	box-shadow: 1px 1px 3px #000
 }
+.popup.submit{
+	margin:-120px 0 0 -130px
+}
 .popup h1{
 	text-align: center;
 	padding: 10px
@@ -134,7 +137,15 @@ strong{
 	text-transform: uppercase;
 	display: block;
 	text-align: center;
-	background-color: #0098db
+	background-color: #0098db;
+	text-decoration: none
+}
+.btn.prev{
+	color: #fff;
+	text-transform: uppercase;
+	display: block;
+	text-align: center;
+	background-color: #006d9c
 }
 .btn.topMar{
 	margin-top: 20px
@@ -148,7 +159,7 @@ strong{
 .animfadeTopIn{
 	animation-name: fadeTopIn;
 	animation-iteration-count:1;
-	animation-duration: 400ms;
+	animation-duration: 300ms;
 	animation-timing-function: ease-in-out;
 	opacity:1;
 }
@@ -159,7 +170,7 @@ strong{
 .animfadeTopOut{
 	animation-name: fadeTopOut;
 	animation-iteration-count:1;
-	animation-duration: 400ms;
+	animation-duration: 300ms;
 	animation-timing-function: ease-in-out;
 }
 @keyframes fadeTopOut {
